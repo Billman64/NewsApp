@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+    <string name="API_endpoint">https://content.guardianapis.com/search?q=</string>
+    <string name="API_endpoint_ender">&amp;api-key=test</string>
+    <string name="parse_error">JSON parse error: </string>
+    <string name="searching">Searching for news...</string>
+    <string name="tag">News App ----</string>
+    <string name="enter_desired_news_topic">enter desired news topic</string>
+    <string name="get_news">Get news</string>
+</resources>
