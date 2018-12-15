@@ -4,7 +4,9 @@
     <string name="API_endpoint_ender">&amp;api-key=test</string>
     <string name="parse_error">JSON parse error: </string>
     <string name="searching">Searching for news...</string>
-    <string name="tag">News App ----</string>
+    <string name="tag">NewsApp ----</string>
     <string name="enter_desired_news_topic">enter desired news topic</string>
     <string name="get_news">Get news</string>
+    <string name="error_malformed_url">Error: malformed URL!</string>
+    <string name="no_result">No news stories found.</string>
 </resources>

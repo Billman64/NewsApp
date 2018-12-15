@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ListView
+        android:id="@+id/listView"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+    </ListView>
+
     <TextView
         android:id="@+id/output"
         android:layout_width="wrap_content"
@@ -16,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:text="nintendo"
         android:id="@+id/et"
         android:layout_width="229dp"
         android:layout_height="wrap_content"
