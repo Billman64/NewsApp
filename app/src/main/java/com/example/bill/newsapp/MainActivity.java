@@ -5,36 +5,23 @@ package com.example.bill.newsapp;
     Created by Bill Lugo for Udacity course. 11/21/18
     Revised 12/18
     News source is Guardian. Any news content displayed comes from and belongs to them.
+    TODO: implement preference to last used search term, as well as a checkbox option to remember it or not
  */
 
 import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.AsyncTaskLoader;
 import android.content.Loader;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
@@ -62,15 +49,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         output.setText("");
 
         // if no news items found, display an message, as a newsItem itself in the listView
-        if(newsItemList.isEmpty()) {
-           newsItemList.add(new NewsItem(getString(R.string.no_result),"--","--", "--"));
+        if(null == newsItemList ) {
+           output.setText(R.string.no_result);
+        } else {
+            // update listView otherwise
+            ListView lv = (ListView) findViewById(R.id.listView);
+            NewsAdapter adapter = new NewsAdapter(this, 0, newsItemList);
+            lv.setAdapter(adapter);
         }
-
-        // update listView
-        ListView lv = (ListView) findViewById(R.id.listView);
-//        ArrayAdapter<NewsItem> adapter  = new ArrayAdapter<>(this, R.layout.news_item, newsItemList);
-        NewsAdapter adapter = new NewsAdapter(this, 0, newsItemList);
-        lv.setAdapter(adapter);
     }
 
     @Override
@@ -81,9 +67,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        LoaderManager loaderManager = getLoaderManager();
-//        loaderManager.initLoader(LOADER_ID, null, this);
 
         Button button = (Button) findViewById(R.id.button);
         final TextView output = (TextView) findViewById(R.id.output);
@@ -97,39 +80,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 output.setText(R.string.searching);
                 getNews();
                 Log.d("NewsApp", "onClick() done");
-
-
-                // test listView output
-//                sampleData();
             }
         });
     }
 
-
-    private void sampleData(){
-        ListView lv = (ListView) findViewById(R.id.listView);
-//        ArrayAdapter<NewsItem> adapter  = new ArrayAdapter<>(this, R.layout.news_item, newsItemList);
-        newsItemList.add(new NewsItem("title","publication data", "author", "url"));
-        NewsAdapter adapter = new NewsAdapter(this, 0, newsItemList);
-        lv.setAdapter(adapter);
-    }
-
-
     private void getNews(){
+
+        // in response to onClick(), sets up and calls LoaderManager to pull the news from the web via worker thread
         try {
             LoaderManager loaderManager = getLoaderManager();
             Log.d("NewsApp", "loaderManager created.");
 
-
             Loader<NewsItem> loader = loaderManager.getLoader(LOADER_ID);
 
+            // init or restart loader
             if(loader == null){
                 loaderManager.initLoader(LOADER_ID, null, this);
                 Log.d("NewsApp", "loaderManaager initialized. Loader_ID: " + LOADER_ID + ".");
             } else {
                 loaderManager.restartLoader(LOADER_ID, null, this);
             }
-            new NewsLoader(getApplicationContext(), new URL(createURI().toString()));   //TODO fix AsyncTaskLoader not executing
+
+            // run NewsLoader
+            new NewsLoader(getApplicationContext(), new URL(createURI().toString()));
 
         } catch (MalformedURLException e) {
             Log.e(getString(R.string.tag),"onClick() Malformed URL in NewsLoader: " + e);
@@ -139,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Uri.Builder createURI() {
         Uri.Builder uri = new Uri.Builder();
         try{
+            // build URI part by part
             uri.scheme("http");
             uri.authority("content.guardianapis.com");
             uri.appendPath("search");

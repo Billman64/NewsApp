@@ -28,7 +28,7 @@ public class HTTPHandler {
             uc.setReadTimeout(5000);
             uc.setConnectTimeout(10000);
             Log.d("NewsApp ----","HTTPHandler about to connect. uc.toString():  " + uc.toString());
-            uc.connect();   // possible cause of connection error here (needed Internet permission added manifest
+            uc.connect();   // potential cause of connection error here (also need Internet permission added in manifest for this)
             Log.d("NewsApp ----","HTTPHandler - urlConnection connected!! url:  " + url);
             is = uc.getInputStream();
             Log.d("NewsApp ----","HTTPHandler input stream:  " + is.toString());
@@ -37,6 +37,7 @@ public class HTTPHandler {
             Log.d("NewsApp ----","url (in HTTPHandler, url connection is good): " + url);
         } catch (Exception e) {
             Log.e("NewsApp ----","Error possibly in urlConnection. uc.toString(): " + uc.toString() + "\n error message: " + e);
+            return null;
 
         } finally {
             if(uc != null) {

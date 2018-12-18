@@ -24,13 +24,17 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.news_item, parent, false);
         }
 
+        // fill in individual textViews
         final NewsItem currentNewsItem = getItem(position);
         TextView title = (TextView) listItemView.findViewById(R.id.title);
         title.setText(currentNewsItem.getTitle());
         TextView date = (TextView) listItemView.findViewById(R.id.date);
-        date.setText(currentNewsItem.getPubDate());
+        date.setText(currentNewsItem.getPubDate());     //TODO: make date user-friendly (maybe extract just the date from the timestamp).
+        TextView author = (TextView) listItemView.findViewById(R.id.author);
+        author.setText(currentNewsItem.getAuthor());
+
+        //TODO: implement onClickListener to make each newsItem clickable using newsItem's url
 
         return listItemView;
-//        return super.getView(position, convertView, parent);
     }
 }
