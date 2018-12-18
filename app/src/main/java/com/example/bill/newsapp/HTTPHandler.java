@@ -13,7 +13,7 @@ public class HTTPHandler {
     public HTTPHandler(){
     }
 
-    // method for initiatinng an http request
+    // method for initiating an http request
     public String startHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
         HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -23,7 +23,7 @@ public class HTTPHandler {
 
         // connection settings with handling
         try{
-//            uc = (HttpURLConnection) url.openConnection();
+            uc = (HttpURLConnection) url.openConnection();
             uc.setRequestMethod("GET");
             uc.setReadTimeout(5000);
             uc.setConnectTimeout(10000);
