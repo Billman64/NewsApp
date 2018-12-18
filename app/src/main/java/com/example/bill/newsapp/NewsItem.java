@@ -3,15 +3,21 @@ package com.example.bill.newsapp;
 public class NewsItem {
     String mTitle;
     String mPubDate;
+    String mSection;
     String mAuthor;
     String mUrl;
 
-    public NewsItem(String mTitle, String mPubDate, String mAuthor, String mUrl) {
-        this.mTitle = mTitle;
-        this.mPubDate = mPubDate;
-        this.mAuthor = mAuthor;
-        this.mUrl = mUrl;
+    public NewsItem(String Title, String PubDate, String section, String Author, String Url) {
+        mTitle = Title;
+        mPubDate = PubDate;
+        mSection = section;
+        mAuthor = Author;
+        mUrl = Url;
     }
+
+    public String getSection() { return mSection; }
+
+    public void setSection(String section) { mSection = section; }
 
     public String getAuthor() {
         return mAuthor;

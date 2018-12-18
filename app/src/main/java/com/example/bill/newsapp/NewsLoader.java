@@ -58,6 +58,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     JSONObject j = jsonArrayResults.getJSONObject(i);
                     String pubDate = j.optString("webPublicationDate");
                     String webTitle = j.optString("webTitle");
+                    String section = j.optString("sectionName");
                     String articleUrl = j.optString("webUrl");
 
                     JSONArray jsonArrayTags = j.optJSONArray("tags");
@@ -67,7 +68,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     Log.d(getContext().getString(R.string.tag), "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
 
                     // put each JSON record into the newsItem list
-                    newsItemList.add(new NewsItem(webTitle, pubDate, author, articleUrl));
+                    newsItemList.add(new NewsItem(webTitle, pubDate, section, author, articleUrl));
                 }
                 return newsItemList;
             }

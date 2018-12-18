@@ -1,6 +1,8 @@
 package com.example.bill.newsapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -30,10 +32,19 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         title.setText(currentNewsItem.getTitle());
         TextView date = (TextView) listItemView.findViewById(R.id.date);
         date.setText(currentNewsItem.getPubDate());     //TODO: make date user-friendly (maybe extract just the date from the timestamp).
+        TextView section = (TextView) listItemView.findViewById(R.id.section);
+        section.setText(currentNewsItem.getSection());
         TextView author = (TextView) listItemView.findViewById(R.id.author);
         author.setText(currentNewsItem.getAuthor());
 
-        //TODO: implement onClickListener to make each newsItem clickable using newsItem's url
+        // implement onClickListener to make each newsItem clickable using newsItem's url
+        listItemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(currentNewsItem.getUrl()));
+                getContext().startActivity(i);
+            }
+        });
 
         return listItemView;
     }
