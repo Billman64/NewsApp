@@ -3,13 +3,16 @@ package com.example.bill.newsapp;
 /*
     News app
     Created by Bill Lugo for Udacity course. 11/21/18
-    Revised 12/18
+    Revised: 12/18
     News source is Guardian. Any news content displayed comes from and belongs to them.
-    TODO: implement preference to last used search term, as well as a checkbox option to remember it or not
+    TODO: implement preference to change default search term
  */
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,10 +52,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // clear output textView, indicating that the network call is done
         TextView output = (TextView) findViewById(R.id.output);
         output.setText("");
+        output.setVisibility(View.INVISIBLE);
 
         // if no news items found, display an message, as a newsItem itself in the listView
         if(null == newsItemList ) {
            output.setText(R.string.no_result);
+           output.setVisibility(View.VISIBLE);
         } else {
             // update listView otherwise
             ListView lv = (ListView) findViewById(R.id.listView);
@@ -68,20 +75,61 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // clear focus from editText
+        EditText et = (EditText) findViewById(R.id.et);
+        et.clearFocus();
+
         Button button = (Button) findViewById(R.id.button);
-        final TextView output = (TextView) findViewById(R.id.output);
+        final TextView output = (TextView) findViewById(R.id.output);   //TODO: retain output text on orientation change
+
+        // Default data pull to show news on startup
+        // if there's an Internet connection, pull news, otherwise display a connection message
+        if(isInternetAvailable()) getNews();
+        else {
+            output.setText(R.string.no_connection);
+            output.setVisibility(View.VISIBLE);
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // Retrieve news via API call in a worker thread
                 Log.d("NewsApp", "onClick() activated");
-                output.setText(R.string.searching);
-                getNews();
-                Log.d("NewsApp", "onClick() done");
+
+                // guard against empty input
+                EditText et = (EditText) findViewById(R.id.et);
+                if(!et.getText().toString().isEmpty()){
+
+                    // Retrieve news via API call in a worker thread
+                    output.setText(R.string.searching);
+                    output.setVisibility(View.VISIBLE);
+
+                    // if there's an Internet connection, pull news, otherwise display a connection message
+                    if(isInternetAvailable()) getNews();
+                            else {
+                                output.setText(R.string.no_connection);
+                                output.setVisibility(View.VISIBLE);
+                    }
+
+                    Log.d("NewsApp", "onClick() done");
+                } else {
+                    Toast.makeText(MainActivity.this, getString(R.string.empty_input), Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private boolean isInternetAvailable(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        // check if network info exists, return true if existing and connected, false otherwise
+        if(netInfo != null) {
+            Log.d("NewsApp ---", "checking internet connection state: " + cm.getActiveNetworkInfo().isConnected());
+            return cm.getActiveNetworkInfo().isConnected();
+        } else {
+            Log.d("NewsApp ---", "checking internet connection state: not connected!");
+            return false;
+        }
     }
 
     private void getNews(){
@@ -117,12 +165,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             uri.authority("content.guardianapis.com");
             uri.appendPath("search");
 
+            //error-trap for spaces in input, by replacing with "%20" to conform to web unicode
             EditText et = (EditText) findViewById(R.id.et);
-            uri.appendQueryParameter("q", et.getText().toString());     //TODO: error-trap for spaces and other special characters in input, ie: "%20" unicode
+            String searchInput = et.getText().toString();
+            if(searchInput.contains(" ")){
+                searchInput.replace(" ", "%20");
+            }
+
+            // append parameters
+            uri.appendQueryParameter("q", searchInput);
             uri.appendQueryParameter("api-key","ad802560-e4de-4aea-9286-8a462045964d");
             uri.appendQueryParameter("show-tags","contributor");
             //TODO: implement fallback query with test api key     uri.appendQueryParameter("api-key","test");
-            //TODO: secure key by hiding it in lower level (C/C++)
+            //TODO: secure key by hiding it in lower level (C/C++ layer), store encrypted, and decrypt at run-time
 
             uri.build();
             Log.d(getString(R.string.tag), "Uri Builder: " + uri.toString());

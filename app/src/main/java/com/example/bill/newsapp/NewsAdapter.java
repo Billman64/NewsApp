@@ -30,10 +30,15 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         final NewsItem currentNewsItem = getItem(position);
         TextView title = (TextView) listItemView.findViewById(R.id.title);
         title.setText(currentNewsItem.getTitle());
+
+        // display date and time, making it human-readable
         TextView date = (TextView) listItemView.findViewById(R.id.date);
-        date.setText(currentNewsItem.getPubDate());     //TODO: make date user-friendly (maybe extract just the date from the timestamp).
+        String [] dateAndTime = currentNewsItem.getPubDate().split("T");
+        date.setText(dateAndTime[0] + " " + dateAndTime[1]);
+
         TextView section = (TextView) listItemView.findViewById(R.id.section);
         section.setText(currentNewsItem.getSection());
+
         TextView author = (TextView) listItemView.findViewById(R.id.author);
         author.setText(currentNewsItem.getAuthor());
 

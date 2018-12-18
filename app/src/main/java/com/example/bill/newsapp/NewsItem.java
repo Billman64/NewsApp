@@ -39,15 +39,7 @@ public class NewsItem {
         return mPubDate;
     }
 
-    public void setPubDate(String mPubDate) {
-        this.mPubDate = mPubDate;
-    }
-
     public String getUrl() {
         return mUrl;
-    }
-
-    public void setUrl(String mUrl) {
-        this.mUrl = mUrl;
     }
 }

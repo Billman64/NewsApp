@@ -9,4 +9,6 @@
     <string name="get_news">Get news</string>
     <string name="error_malformed_url">Error: malformed URL!</string>
     <string name="no_result">No news stories found.</string>
+    <string name="no_connection">No internet connection available"</string>
+    <string name="empty_input">Empty input. Try typing in a news topic.</string>
 </resources>

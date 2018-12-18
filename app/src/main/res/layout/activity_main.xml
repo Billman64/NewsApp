@@ -8,19 +8,19 @@
 
     <ListView
         android:id="@+id/listView"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-
-    </ListView>
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintBottom_toTopOf="@id/et"
+        app:layout_constraintTop_toTopOf="parent"></ListView>
 
     <TextView
         android:id="@+id/output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/output"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -36,10 +36,14 @@
         android:layout_marginBottom="8dp"
         android:hint="@string/enter_desired_news_topic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button" />
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        android:focusedByDefault="false"/>
 
     <Button
         android:id="@+id/button"
+        android:background="@color/colorPrimary"
+        android:textColor="#eeeeee"
+        android:textStyle="bold"
         android:layout_width="126dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
