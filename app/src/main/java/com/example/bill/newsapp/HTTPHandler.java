@@ -25,7 +25,7 @@ public class HTTPHandler {
         try{
             uc = (HttpURLConnection) url.openConnection();
             uc.setRequestMethod("GET");
-            uc.setReadTimeout(5000);
+            uc.setReadTimeout(7000);
             uc.setConnectTimeout(10000);
             Log.d("NewsApp ----","HTTPHandler about to connect. uc.toString():  " + uc.toString());
             uc.connect();   // potential cause of connection error here (also need Internet permission added in manifest for this)
