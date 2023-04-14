@@ -72,7 +72,6 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     JSONArray jsonArrayTags = j.optJSONArray("tags");
                     JSONObject jsonObjectTag = jsonArrayTags.optJSONObject(0);
 
-                    Log.d(TAG, "foo");
                     String author = author = j.optString("firstName") + j.optString("lastName");
                     Log.d(getContext().getString(R.string.tag), "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
 
