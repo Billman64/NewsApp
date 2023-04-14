@@ -11,6 +11,7 @@ import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
     String mUrl;
+    final String TAG = "NewsApp ----";
 
     public NewsLoader(Context context, URL url) {
         super(context);
@@ -59,6 +60,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                 List<NewsItem> newsItemList = new ArrayList<NewsItem>();
 
                 // loop through records
+                Log.d(TAG, "jsonArrayResults.length = " + jsonArrayResults.length());
                 for(int i=0; i < jsonArrayResults.length(); i++) {
                     // create individual JSON objects and arrays to traverse to specific data points
                     JSONObject j = jsonArrayResults.getJSONObject(i);
@@ -70,11 +72,13 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     JSONArray jsonArrayTags = j.optJSONArray("tags");
                     JSONObject jsonObjectTag = jsonArrayTags.optJSONObject(0);
 
-                    String author = jsonObjectTag.optString("webTitle");
+                    Log.d(TAG, "foo");
+                    String author = author = j.optString("firstName") + j.optString("lastName");
                     Log.d(getContext().getString(R.string.tag), "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
 
                     // put each JSON record into the newsItem list
                     newsItemList.add(new NewsItem(webTitle, pubDate, section, author, articleUrl));
+//                    Log.d(TAG + " sample: ", pubDate + webTitle.substring(0,10) + section.substring(0,5) + articleUrl.substring(0,10));
                 }
                 return newsItemList;
             }
