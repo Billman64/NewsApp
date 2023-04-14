@@ -11,7 +11,6 @@ import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
     String mUrl;
-    String TAG = getContext().getString(R.string.tag);
 
     public NewsLoader(Context context, URL url) {
         super(context);
@@ -47,7 +46,13 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                 // create JSON objects to traverse to general data area
                 JSONObject jsonObjectResponse = jsonRoot.optJSONObject("response");
                 Log.d("NewsApp ----", "jsonObjectResponse: " + jsonObjectResponse.toString().substring(0,100));
-                JSONArray jsonArrayResults = jsonObjectResponse.getJSONArray("results");
+
+                JSONArray jsonArrayResults = null;
+                try {
+                    jsonArrayResults = jsonObjectResponse.optJSONArray("results");
+                } catch(Exception e) {
+                    Log.d(getContext().getString(R.string.tag), "JSON parsing error! Message: " + e.getMessage());
+                }
                 Log.d(getContext().getString(R.string.tag),"jsonObjectResponse created with length: " + jsonObjectResponse.length() );
 
                 // create a temporary newsItem list to return
@@ -62,10 +67,10 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     String section = j.optString("sectionName");
                     String articleUrl = j.optString("webUrl");
 
-                    JSONArray jsonArrayTags = j.optJSONArray("tags");   //TODO: implement error-trapping for articles with no tags
+                    JSONArray jsonArrayTags = j.optJSONArray("tags");
                     JSONObject jsonObjectTag = jsonArrayTags.optJSONObject(0);
 
-                    String author = jsonObjectTag.optString("author");
+                    String author = jsonObjectTag.optString("webTitle");
                     Log.d(getContext().getString(R.string.tag), "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
 
                     // put each JSON record into the newsItem list
@@ -76,6 +81,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
 
             } catch (final Exception e) {
                 Log.e(getContext().getString(R.string.tag), "Parse, or other, exception: " + e.getMessage().substring(0,100) );
+
                 //TODO: differentiate between different exceptions, such as malformedURL or ParseException
 
                 return null;
