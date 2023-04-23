@@ -11,8 +11,9 @@ import java.net.URL;
 
 public class HTTPHandler {
     public HTTPHandler(){
-        final String TAG = "NewsApp ---";
     }
+
+    final String TAG = "HTTPHandler";
 
     // method for initiating an http request
     public String startHttpRequest(URL url) throws IOException {
@@ -20,7 +21,7 @@ public class HTTPHandler {
         HttpURLConnection uc = (HttpURLConnection) url.openConnection();
         InputStream is = null;
 
-        Log.d("TAG","url (in HTTPHandler, before setting connection): " + url);
+        Log.d(TAG,"url (in HTTPHandler, before setting connection): " + url);
 
         // connection settings with handling
         try{
@@ -28,24 +29,27 @@ public class HTTPHandler {
             uc.setRequestMethod("GET");
             uc.setReadTimeout(7000);
             uc.setConnectTimeout(10000);
-            Log.d("TAG","HTTPHandler about to connect. uc.toString():  " + uc.toString());
+            Log.d(TAG,"HTTPHandler about to connect. uc.toString():  " + uc.toString());
             uc.connect();   // potential cause of connection error here (also need Internet permission added in manifest for this)
-            Log.d("TAG","HTTPHandler - urlConnection connected!! url:  " + url);
+            //TODO: implement handling for connection issues here, ie: firewall blockage
+            Log.d(TAG,"HTTPHandler - urlConnection connected!! url:  " + url);
             is = uc.getInputStream();
-            Log.d("TAG","HTTPHandler input stream:  " + is.toString());
+            Log.d(TAG,"HTTPHandler input stream:  " + is.toString());
             jsonResponse = streamToString(is);
 
-            Log.d("TAG","url (in HTTPHandler, url connection is good): " + url);
+            Log.d(TAG,"url (in HTTPHandler, url connection is good): " + url);
         } catch (Exception e) {
-            Log.e("TAG","Error possibly in urlConnection. uc.toString(): " + uc.toString() + "\n error message: " + e);
+            Log.e(TAG,"Error possibly in urlConnection. uc.toString(): " + uc.toString() + "\n error message: " + e);
             return null;
 
         } finally {
             if(uc != null) {
                 uc.disconnect();
+                Log.d(TAG, "Handler disconnected");
             }
             if(is != null) {
                 is.close();
+                Log.d(TAG, "Handler closed connection");
             }
         }
         return jsonResponse;

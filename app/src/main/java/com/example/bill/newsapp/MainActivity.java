@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int LOADER_ID = 1;
 
     public ArrayList newsItemList = new ArrayList<NewsItem>();
+    public String TAG = "MainAct";
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int loaderId, Bundle args) {
@@ -40,14 +41,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             URL url = new URL(createURI().toString());
             return new NewsLoader(this,url);
         } catch (MalformedURLException e) {
-            Log.e(getString(R.string.tag),"onCreateLoader(): MalformedURL " + e);
+            Log.e(TAG,"onCreateLoader(): MalformedURL " + e);
             return null;
         }
     }
 
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> newsItemList){
-        Log.d(getString(R.string.tag), "AsyncTaskLoader onLoadFinished()");
+        Log.d(TAG, "AsyncTaskLoader onLoadFinished()");
 
         // clear output textView, indicating that the network call is done
         TextView output = (TextView) findViewById(R.id.output);
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("NewsApp", "onClick() activated");
+                Log.d(TAG, "onClick() activated");
 
                 // guard against empty input
                 EditText et = (EditText) findViewById(R.id.et);
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                 output.setVisibility(View.VISIBLE);
                     }
 
-                    Log.d("NewsApp", "onClick() done");
+                    Log.d(TAG, "onClick() done");
                 } else {
                     Toast.makeText(MainActivity.this, getString(R.string.empty_input), Toast.LENGTH_SHORT).show();
                 }
@@ -124,10 +125,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // check if network info exists, return true if existing and connected, false otherwise
         if(netInfo != null) {
-            Log.d("NewsApp ---", "checking internet connection state: " + cm.getActiveNetworkInfo().isConnected());
+            Log.d(TAG, "checking internet connection state: " + cm.getActiveNetworkInfo().isConnected());
             return cm.getActiveNetworkInfo().isConnected();
         } else {
-            Log.d("NewsApp ---", "checking internet connection state: not connected!");
+            Log.d(TAG, "checking internet connection state: not connected!");
             return false;
         }
     }
@@ -137,14 +138,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // in response to onClick(), sets up and calls LoaderManager to pull the news from the web via worker thread
         try {
             LoaderManager loaderManager = getLoaderManager();
-            Log.d("NewsApp", "loaderManager created.");
+            Log.d(TAG, "loaderManager created.");
 
             Loader<NewsItem> loader = loaderManager.getLoader(LOADER_ID);
 
             // init or restart loader
             if(loader == null){
                 loaderManager.initLoader(LOADER_ID, null, this);
-                Log.d("NewsApp", "loaderManaager initialized. Loader_ID: " + LOADER_ID + ".");
+                Log.d(TAG, "loaderManaager initialized. Loader_ID: " + LOADER_ID + ".");
             } else {
                 loaderManager.restartLoader(LOADER_ID, null, this);
             }
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             new NewsLoader(getApplicationContext(), new URL(createURI().toString()));
 
         } catch (MalformedURLException e) {
-            Log.e(getString(R.string.tag),"onClick() Malformed URL in NewsLoader: " + e);
+            Log.e(TAG,"onClick() Malformed URL in NewsLoader: " + e);
         }
     }
 
@@ -174,16 +175,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             // append parameters
             uri.appendQueryParameter("q", searchInput);
-
-            uri.appendQueryParameter("api-key","test");
+            uri.appendQueryParameter("api-key","ad802560-e4de-4aea-9286-8a462045964d");
+//            uri.appendQueryParameter("api-key","test");
             uri.appendQueryParameter("show-tags","contributor");
             //TODO: implement fallback query with test api key     uri.appendQueryParameter("api-key","test");
             //TODO: secure key by hiding it in lower level (C/C++ layer), store encrypted, and decrypt at run-time
 
             uri.build();
-            Log.d(getString(R.string.tag), "Uri Builder: " + uri.toString());
+            Log.d(TAG, "Uri Builder: " + uri.toString());
         } catch(Exception e) {
-            Log.e(getString(R.string.tag),getString(R.string.error_malformed_url));
+            Log.e(TAG,getString(R.string.error_malformed_url));
             return null;
         }
         return uri;

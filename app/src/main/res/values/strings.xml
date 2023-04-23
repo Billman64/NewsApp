@@ -5,7 +5,8 @@
     <string name="parse_error">JSON parse error: </string>
     <string name="searching">Searching for news...</string>
     <string name="tag">NewsApp ----</string>
-    <string name="enter_desired_news_topic">enter desired news topic</string>
+    <string name="initial_message">Enter desired news topic</string>
+    <string name="enter_desired_news_topic">enter topic</string>
     <string name="get_news">Get news</string>
     <string name="error_malformed_url">Error: malformed URL!</string>
     <string name="no_result">No news stories found.</string>
