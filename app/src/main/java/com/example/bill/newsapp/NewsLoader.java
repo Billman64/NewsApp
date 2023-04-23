@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
     String mUrl;
-    final String TAG = "NewsApp ----";
+    final String TAG = "NewsLoader";
 
     public NewsLoader(Context context, URL url) {
         super(context);
@@ -19,13 +19,13 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
     }
 
     protected void onStartLoading(){
-        Log.d(getContext().getString(R.string.tag), "AsyncTaskLoader onStartLoading().");
+        Log.d(TAG, "AsyncTaskLoader onStartLoading().");
         forceLoad();
     }
 
     @Override
     public List<NewsItem> loadInBackground() {
-        Log.d(getContext().getString(R.string.tag), "AsyncTaskLoader loadInBackground().");
+        Log.d(TAG, "AsyncTaskLoader loadInBackground().");
 
         if(mUrl==null) return null;
 
@@ -35,26 +35,26 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
             // make request to the endpoint's URL
             String rawJson = hh.startHttpRequest(new URL(mUrl));
             if(rawJson == null) {
-                Log.d("NewsApp ---", "HTTPHandler done. rawJson is null");
+                Log.d(TAG, "HTTPHandler done. rawJson is null");
                 return null;
             } else {
-                Log.d("NewsApp ---", "HTTPHandler done. rawJson: " + rawJson.substring(0,50) + "...");
+                Log.d(TAG, "HTTPHandler done. rawJson: " + rawJson.substring(0,50) + "...");
 
 
                 JSONObject jsonRoot = new JSONObject(rawJson);
-                Log.d(getContext().getString(R.string.tag),"jsonRoot: " + jsonRoot.toString().substring(0,100) + "..." );
+                Log.d(TAG,"jsonRoot: " + jsonRoot.toString().substring(0,100) + "..." );
 
                 // create JSON objects to traverse to general data area
                 JSONObject jsonObjectResponse = jsonRoot.optJSONObject("response");
-                Log.d("NewsApp ----", "jsonObjectResponse: " + jsonObjectResponse.toString().substring(0,100));
+                Log.d(TAG, "jsonObjectResponse: " + jsonObjectResponse.toString().substring(0,100));
 
                 JSONArray jsonArrayResults = null;
                 try {
                     jsonArrayResults = jsonObjectResponse.optJSONArray("results");
                 } catch(Exception e) {
-                    Log.d(getContext().getString(R.string.tag), "JSON parsing error! Message: " + e.getMessage());
+                    Log.d(TAG, "JSON parsing error! Message: " + e.getMessage());
                 }
-                Log.d(getContext().getString(R.string.tag),"jsonObjectResponse created with length: " + jsonObjectResponse.length() );
+                Log.d(TAG,"jsonObjectResponse created with length: " + jsonObjectResponse.length() );
 
                 // create a temporary newsItem list to return
                 List<NewsItem> newsItemList = new ArrayList<NewsItem>();
@@ -73,7 +73,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     JSONObject jsonObjectTag = jsonArrayTags.optJSONObject(0);
 
                     String author = author = j.optString("firstName") + j.optString("lastName");
-                    Log.d(getContext().getString(R.string.tag), "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
+                    Log.d(TAG, "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
 
                     // put each JSON record into the newsItem list
                     newsItemList.add(new NewsItem(webTitle, pubDate, section, author, articleUrl));
@@ -83,7 +83,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
             }
 
             } catch (final Exception e) {
-                Log.e(getContext().getString(R.string.tag), "Parse, or other, exception: " + e.getMessage().substring(0,100) );
+                Log.e(TAG, "Parse, or other, exception: " + e.getMessage().substring(0,100) );
 
                 //TODO: differentiate between different exceptions, such as malformedURL or ParseException
 
