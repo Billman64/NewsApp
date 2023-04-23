@@ -175,7 +175,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             // append parameters
             uri.appendQueryParameter("q", searchInput);
-            uri.appendQueryParameter("api-key","test");
+            uri.appendQueryParameter("api-key","");
+//            uri.appendQueryParameter("api-key","test");
             uri.appendQueryParameter("show-tags","contributor");
             //TODO: implement fallback query with test api key     uri.appendQueryParameter("api-key","test");
             //TODO: secure key by hiding it in lower level (C/C++ layer), store encrypted, and decrypt at run-time
