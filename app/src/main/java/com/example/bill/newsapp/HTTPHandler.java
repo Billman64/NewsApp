@@ -33,13 +33,18 @@ public class HTTPHandler {
             uc.connect();   // potential cause of connection error here (also need Internet permission added in manifest for this)
             //TODO: implement handling for connection issues here, ie: firewall blockage
             Log.d(TAG,"HTTPHandler - urlConnection connected!! url:  " + url);
-            is = uc.getInputStream();
+            try {
+                is = uc.getInputStream();   //TODO: API error handling needed here
+            } catch(Exception e){
+                Log.e(TAG, "API error! Response: " + uc.getResponseCode() + " " + uc.getResponseMessage());
+            }
             Log.d(TAG,"HTTPHandler input stream:  " + is.toString());
             jsonResponse = streamToString(is);
 
             Log.d(TAG,"url (in HTTPHandler, url connection is good): " + url);
         } catch (Exception e) {
             Log.e(TAG,"Error possibly in urlConnection. uc.toString(): " + uc.toString() + "\n error message: " + e);
+            Log.e(TAG, " API response: " + is.toString());
             return null;
 
         } finally {
