@@ -34,9 +34,12 @@ public class HTTPHandler {
             //TODO: implement handling for connection issues here, ie: firewall blockage
             Log.d(TAG,"HTTPHandler - urlConnection connected!! url:  " + url);
             try {
-                is = uc.getInputStream();   //TODO: API error handling needed here
+                is = uc.getInputStream();   // API error handling
             } catch(Exception e){
                 Log.e(TAG, "API error! Response: " + uc.getResponseCode() + " " + uc.getResponseMessage());
+                if(uc.getResponseMessage().contains("Unauthorized")){
+                    Log.i(TAG, " Tip: Get an API key from the source site.");
+                }
             }
             Log.d(TAG,"HTTPHandler input stream:  " + is.toString());
             jsonResponse = streamToString(is);
