@@ -1,4 +1,4 @@
-package com.example.bill.newsapp;
+package com.example.bill.newsapp.Model;
 
 public class NewsItem {
     String mTitle;

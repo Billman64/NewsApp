@@ -1,8 +1,12 @@
-package com.example.bill.newsapp;
+package com.example.bill.newsapp.Presenter;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
+
+import com.example.bill.newsapp.Model.HTTPHandler;
+import com.example.bill.newsapp.Model.NewsItem;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.net.URL;

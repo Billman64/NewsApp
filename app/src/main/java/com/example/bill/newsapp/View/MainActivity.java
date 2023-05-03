@@ -1,4 +1,4 @@
-package com.example.bill.newsapp;
+package com.example.bill.newsapp.View;
 
 /*
     News app
@@ -23,6 +23,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.bill.newsapp.Model.KeyRetriever;
+import com.example.bill.newsapp.Model.NewsItem;
+import com.example.bill.newsapp.Presenter.NewsLoader;
+import com.example.bill.newsapp.R;
 
 import java.net.MalformedURLException;
 import java.net.URL;

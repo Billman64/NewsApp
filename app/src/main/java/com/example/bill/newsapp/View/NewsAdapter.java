@@ -1,4 +1,4 @@
-package com.example.bill.newsapp;
+package com.example.bill.newsapp.View;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.bill.newsapp.Model.NewsItem;
+import com.example.bill.newsapp.R;
 
 import java.util.List;
 

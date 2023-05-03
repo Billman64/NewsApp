@@ -1,4 +1,4 @@
-package com.example.bill.newsapp;
+package com.example.bill.newsapp.Model;
 
 import android.util.Log;
 
