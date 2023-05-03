@@ -82,6 +82,11 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     // put each JSON record into the newsItem list
                     newsItemList.add(new NewsItem(webTitle, pubDate, section, author, articleUrl));
 //                    Log.d(TAG + " sample: ", pubDate + webTitle.substring(0,10) + section.substring(0,5) + articleUrl.substring(0,10));
+
+                    //TODO: sort by date
+
+//                    newsItemList.sort();  // NewsItem needs comparator
+
                 }
                 return newsItemList;
             }

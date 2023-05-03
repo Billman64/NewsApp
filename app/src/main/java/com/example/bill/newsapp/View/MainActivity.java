@@ -5,6 +5,8 @@ package com.example.bill.newsapp.View;
     Created by Bill Lugo for Udacity course. 11/21/18
     Revised: 12/18
     News source is Guardian. Any news content displayed comes from and belongs to them.
+
+    API documentation: https://open-platform.theguardian.com/documentation/
     TODO: implement preference to change default search term
  */
 
@@ -32,7 +34,9 @@ import com.example.bill.newsapp.R;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
     public static final int LOADER_ID = 1;
@@ -179,15 +183,36 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
 
             // append parameters
+
+            // implement region detection
+            String edition = "us";
+            switch(Locale.getDefault().getCountry()){
+                case "US": edition = "us";
+                    break;
+                case "AU": edition = "au";
+                    break;
+                case "GB": edition = "uk";
+                    break;
+                default: edition = "international";
+                    String[] Eu = {"BE", "EL", "LT", "PT", "BG", "ES", "LU", "RO", "CZ", "FR", "HU", "SI", "DK", "HR",
+                            "MT", "SK", "DE", "IT", "NL", "FI", "EE", "CY", "AT", "SE", "IE", "LV", "PL", "UK",
+                            "CH", "NO", "IS", "LI"};
+                    if(Arrays.asList(Eu).contains(Locale.getDefault().getCountry())) edition = "europe";    //refactor
+                    break;
+            }
+            uri.appendQueryParameter("edition", edition);
+            Log.i(TAG, "REGION: " + Locale.getDefault().getCountry());
+
             uri.appendQueryParameter("q", searchInput);
 
-//            uri.appendQueryParameter("api-key","test");
             KeyRetriever keyRetriever = new KeyRetriever();
-            String key = keyRetriever.getKey();
+            String key = keyRetriever.getKey(); // refactor?
             uri.appendQueryParameter("api-key",key);
             uri.appendQueryParameter("show-tags","contributor");
             //TODO: implement fallback query with test api key     uri.appendQueryParameter("api-key","test");
             //TODO: secure key by hiding it in lower level (C/C++ layer), store encrypted, and decrypt at run-time
+
+            uri.appendQueryParameter("order-by", "relevance");
 
             uri.build();
             Log.d(TAG, "Uri Builder: " + uri.toString());
