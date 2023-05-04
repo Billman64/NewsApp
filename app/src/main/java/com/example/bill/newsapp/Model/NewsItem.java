@@ -6,13 +6,15 @@ public class NewsItem {
     String mSection;
     String mAuthor;
     String mUrl;
+    String mPreview;
 
-    public NewsItem(String Title, String PubDate, String section, String Author, String Url) {
+    public NewsItem(String Title, String PubDate, String section, String Author, String Url, String Preview) {
         mTitle = Title;
         mPubDate = PubDate;
         mSection = section;
         mAuthor = Author;
         mUrl = Url;
+        mPreview = Preview;
     }
 
     public String getSection() { return mSection; }
@@ -42,4 +44,6 @@ public class NewsItem {
     public String getUrl() {
         return mUrl;
     }
+
+    public String getPreview(){ return mPreview; }
 }

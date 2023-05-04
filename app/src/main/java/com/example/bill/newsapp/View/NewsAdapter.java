@@ -45,6 +45,9 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         TextView author = (TextView) listItemView.findViewById(R.id.author);
         author.setText(currentNewsItem.getAuthor());
 
+        TextView preview = (TextView) listItemView.findViewById(R.id.preview);
+        preview.setText(currentNewsItem.getPreview());
+
         // implement onClickListener to make each newsItem clickable using newsItem's url
         listItemView.setOnClickListener(new View.OnClickListener(){
             @Override

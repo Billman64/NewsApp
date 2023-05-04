@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public ArrayList newsItemList = new ArrayList<NewsItem>();
     public String TAG = "MainAct";
 
+    //TODO: refactor non-View architectural functions to proper MVP placement
+
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int loaderId, Bundle args) {
         try{
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             // init or restart loader
             if(loader == null){
                 loaderManager.initLoader(LOADER_ID, null, this);
-                Log.d(TAG, "loaderManaager initialized. Loader_ID: " + LOADER_ID + ".");
+                Log.d(TAG, "loaderManager initialized. Loader_ID: " + LOADER_ID + ".");
             } else {
                 loaderManager.restartLoader(LOADER_ID, null, this);
             }
@@ -212,7 +214,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             //TODO: implement fallback query with test api key     uri.appendQueryParameter("api-key","test");
             //TODO: secure key by hiding it in lower level (C/C++ layer), store encrypted, and decrypt at run-time
 
+            uri.appendQueryParameter("show-blocks","body:latest");
+
             uri.appendQueryParameter("order-by", "relevance");
+            uri.appendQueryParameter("order-by", "newest");
+
 
             uri.build();
             Log.d(TAG, "Uri Builder: " + uri.toString());

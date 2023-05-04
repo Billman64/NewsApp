@@ -73,6 +73,18 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     String section = j.optString("sectionName");
                     String articleUrl = j.optString("webUrl");
 
+                    // get article body sample for preview (json obj "blocks", array "requestedBodyBlocks", obj "bodyHtml")
+                    JSONObject blocks = j.getJSONObject("blocks");
+                    JSONObject requestedBodyBlocks = blocks.getJSONObject("requestedBodyBlocks");
+//                    Log.d(TAG, " requestedBodyBlocks: " + requestedBodyBlocks.toString().substring(0,200));
+                    JSONArray bodyLatest = requestedBodyBlocks.optJSONArray("body:latest");
+//                    Log.d(TAG, " body:latest: " + bodyLatest.toString().substring(0,300));
+                    String preview = bodyLatest.optJSONObject(0).getString("bodyTextSummary");
+                    if(preview.length()>=400) preview = preview.substring(0,399);
+                    preview += "...";
+                    Log.d(TAG, " preview: " + preview);
+
+
                     JSONArray jsonArrayTags = j.optJSONArray("tags");
                     JSONObject jsonObjectTag = jsonArrayTags.optJSONObject(0);
 
@@ -80,7 +92,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     Log.d(TAG, "news: " + webTitle);    // it could be fun or funny to see a news headline in a logcat log
 
                     // put each JSON record into the newsItem list
-                    newsItemList.add(new NewsItem(webTitle, pubDate, section, author, articleUrl));
+                    newsItemList.add(new NewsItem(webTitle, pubDate, section, author, articleUrl, preview));
 //                    Log.d(TAG + " sample: ", pubDate + webTitle.substring(0,10) + section.substring(0,5) + articleUrl.substring(0,10));
 
                     //TODO: sort by date
