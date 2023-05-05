@@ -53,6 +53,9 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(currentNewsItem.getUrl()));
+
+                //TODO: intent for article view screen (activity?)
+//                Intent i = new Intent(this, ArticleView.class);
                 getContext().startActivity(i);
             }
         });

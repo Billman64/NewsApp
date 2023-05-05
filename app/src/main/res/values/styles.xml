@@ -13,4 +13,9 @@
         <item name="android:textColor">#eeeeee</item>
         <item name="android:padding">16dp</item>
     </style>
+
+    <style name="title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
 </resources>
