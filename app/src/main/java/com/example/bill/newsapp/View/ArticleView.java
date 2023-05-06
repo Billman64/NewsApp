@@ -1,29 +1,27 @@
 package com.example.bill.newsapp.View;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
+        import android.content.Intent;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.os.PersistableBundle;
+        import android.support.annotation.Nullable;
+        import android.support.v7.app.AppCompatActivity;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.TextView;
 
-import com.example.bill.newsapp.R;
+        import com.example.bill.newsapp.R;
 
 public class ArticleView extends AppCompatActivity {
     public String TAG = "ArticleView";
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        setContentView(R.layout.article_view);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);    // persistentState prevents activity from running
+        setContentView(R.layout.activity_article_view);
 
-        //TODO: fix to get this class to run
         Log.d(TAG, " starting onCreate() of ArticleView");
-
-
+        
         String title = getIntent().getExtras().getString("title");
         String date = getIntent().getExtras().getString("date");
         String section = getIntent().getExtras().getString("section");

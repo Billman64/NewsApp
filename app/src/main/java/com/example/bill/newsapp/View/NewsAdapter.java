@@ -54,6 +54,7 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         TextView urlTv = (TextView) listItemView.findViewById(R.id.url);
         urlTv.setText(currentNewsItem.getUrl());
 
+        // Tappable link opens web browser
         urlTv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -74,6 +75,7 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
 
                 try {
                 Intent i = new Intent(view.getContext(), ArticleView.class);  //???
+
                     //TODO: intent for article view screen (activity?)
 //                Intent i = new Intent(this, ArticleView.class);
                     i.putExtra("title", currentNewsItem.getTitle());
@@ -88,7 +90,6 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
                     Log.e(TAG," intent error cause: " + e.getCause());
                     Log.e(TAG, " intent error msg: " + e.getMessage());
                 }
-
 
             }
         });
