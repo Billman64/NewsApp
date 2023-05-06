@@ -47,5 +47,13 @@
         tools:text="John Smith"
         android:paddingLeft="8dp" />
 
+    <TextView
+        android:id="@+id/url"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        app:layout_constraintLeft_toLeftOf="@id/date"
+        tools:text="http://www.guardiannews.com"/>
+
 
 </android.support.constraint.ConstraintLayout>
