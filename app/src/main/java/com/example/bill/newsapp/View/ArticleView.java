@@ -20,8 +20,10 @@ public class ArticleView extends AppCompatActivity {
         super.onCreate(savedInstanceState);    // persistentState prevents activity from running
         setContentView(R.layout.activity_article_view);
 
+        //TODO: load whole article (separate network request)
+
         Log.d(TAG, " starting onCreate() of ArticleView");
-        
+
         String title = getIntent().getExtras().getString("title");
         String date = getIntent().getExtras().getString("date");
         String section = getIntent().getExtras().getString("section");

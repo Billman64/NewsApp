@@ -16,6 +16,7 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,6 +88,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TODO: to support on-screen data persistance through orientation change and other events,
+        // retrieve data from savedInstanceState or onSaveInstanceState()
+        if(savedInstanceState != null) Log.d(TAG, "onCreate() - savedInstanceState exists. size: " + savedInstanceState.size());
+
+//        if(!savedInstanceState.isEmpty()){
+//            ListView lv = (ListView) findViewById(R.id.listView);
+//
+////            ArrayList newsItemList = new ArrayList<NewsItem>();
+//
+//                //TODO: fill newsItemList with data from instanceState
+//
+//            NewsAdapter adapter = new NewsAdapter(this, 0, newsItemList);
+//            lv.setAdapter(adapter);
+//
+//        }
+
         // clear focus from editText
         EditText et = (EditText) findViewById(R.id.et);
         et.clearFocus();
@@ -95,6 +112,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         final TextView output = (TextView) findViewById(R.id.output);   //TODO: retain output text on orientation change
 
         // Default data pull to show news on startup
+
+        Log.d(TAG, "checking savedInstanceState...");
+        if(savedInstanceState != null) {
+            Log.d(TAG, "savedInstanceState exists");
+            if(!savedInstanceState.isEmpty()) Log.d(TAG, " savedInstanceState has data");
+        } else Log.d(TAG, "savedInstanceState does not exist");
+
+
         // if there's an Internet connection, pull news, otherwise display a connection message
         if(isInternetAvailable()) getNews();
         else {
@@ -229,4 +254,44 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return uri;
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //TODO: get this to run
+        Log.d(TAG, "onSaveInstanceState()");
+
+        Log.d(TAG, " onSaveInstanceState() - newsItemList size: " + newsItemList.size());
+        outState.putParcelableArrayList("list", newsItemList);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        Log.d(TAG, "onRestoreInstanceState()");
+
+//        Log.d(TAG, "onRestoreInstanceState() has data?: " + !savedInstanceState.isEmpty());
+//
+//            if(!savedInstanceState.isEmpty()) {
+//
+//
+//
+//                newsItemList = savedInstanceState.getParcelableArrayList("list");
+//
+//                if(newsItemList != null) {
+//                    Log.d(TAG, " newsItemList first item: " + newsItemList.get(0).toString());
+//
+//                    Log.d(TAG, "onRestoreInstanceState() - list data obtained! List size: " + newsItemList.size());
+//
+//                    ListView lv = (ListView) findViewById(R.id.listView);
+//                    Log.d(TAG, "onRestoreInstanceState() - listView identified");
+//                    NewsAdapter adapter = new NewsAdapter(this, R.id.listView, newsItemList);
+//                    Log.d(TAG, "onRestoreInstanceState() - NewsAdapter populated");
+//                    lv.setAdapter(adapter); //TODO: fix crash here - 'int java.util.List.size()' on a null object reference
+//                    Log.d(TAG, "onRestoreInstanceState() - NewsAdapter set into listView!");
+//                }
+//            }
+    }
 }
