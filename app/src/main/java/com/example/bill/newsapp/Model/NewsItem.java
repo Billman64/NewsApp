@@ -1,6 +1,9 @@
 package com.example.bill.newsapp.Model;
 
-public class NewsItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NewsItem implements Parcelable {
     String mTitle;
     String mPubDate;
     String mSection;
@@ -16,6 +19,27 @@ public class NewsItem {
         mUrl = Url;
         mPreview = Preview;
     }
+
+    protected NewsItem(Parcel in) {
+        mTitle = in.readString();
+        mPubDate = in.readString();
+        mSection = in.readString();
+        mAuthor = in.readString();
+        mUrl = in.readString();
+        mPreview = in.readString();
+    }
+
+    public static final Creator<NewsItem> CREATOR = new Creator<NewsItem>() {
+        @Override
+        public NewsItem createFromParcel(Parcel in) {
+            return new NewsItem(in);
+        }
+
+        @Override
+        public NewsItem[] newArray(int size) {
+            return new NewsItem[size];
+        }
+    };
 
     public String getSection() { return mSection; }
 
@@ -46,4 +70,19 @@ public class NewsItem {
     }
 
     public String getPreview(){ return mPreview; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mTitle);
+        parcel.writeString(mPubDate);
+        parcel.writeString(mSection);
+        parcel.writeString(mAuthor);
+        parcel.writeString(mUrl);
+        parcel.writeString(mPreview);
+    }
 }

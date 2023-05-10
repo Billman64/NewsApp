@@ -82,7 +82,7 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
                     String preview = bodyLatest.optJSONObject(0).getString("bodyTextSummary");
                     if(preview.length()>=400) preview = preview.substring(0,399);
                     preview += "...";
-                    Log.d(TAG, " preview: " + preview);
+                    Log.d(TAG, " preview: " + preview.substring(0,20));
 
 
                     JSONArray jsonArrayTags = j.optJSONArray("tags");

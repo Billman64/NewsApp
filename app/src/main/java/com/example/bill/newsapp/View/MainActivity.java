@@ -42,7 +42,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
     public static final int LOADER_ID = 1;
 
-    public ArrayList newsItemList = new ArrayList<NewsItem>();
+    public volatile ArrayList newsItemList = new ArrayList<NewsItem>();
     public String TAG = "MainAct";
 
     //TODO: refactor non-View architectural functions to proper MVP placement
@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             ListView lv = (ListView) findViewById(R.id.listView);
             NewsAdapter adapter = new NewsAdapter(this, 0, newsItemList);
             lv.setAdapter(adapter);
+
+            Log.d(TAG, "onLoadFinished() newsItemList size: " + newsItemList.size());
         }
     }
 
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -121,10 +123,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         // if there's an Internet connection, pull news, otherwise display a connection message
-        if(isInternetAvailable()) getNews();
-        else {
-            output.setText(R.string.no_connection);
-            output.setVisibility(View.VISIBLE);
+        Log.d(TAG, "onCreate() - newsItemList size (before sync block): " + newsItemList.size());
+            if(isInternetAvailable()) {
+                getNews();
+            }
+            else {
+                output.setText(R.string.no_connection);
+                output.setVisibility(View.VISIBLE);
+            }
+
+        Log.d(TAG, "newsItemList size after sync block: " + newsItemList.size());
+
+
+        Log.d(TAG, "onCreate() - newsItemList size: " + newsItemList.size());
+        if(newsItemList.size()>0) {
+            savedInstanceState.putParcelableArrayList("list", newsItemList);
+            Log.d(TAG, "savedInstanceState updated");
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -141,11 +155,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     output.setVisibility(View.VISIBLE);
 
                     // if there's an Internet connection, pull news, otherwise display a connection message
-                    if(isInternetAvailable()) getNews();
-                            else {
-                                output.setText(R.string.no_connection);
-                                output.setVisibility(View.VISIBLE);
-                    }
+                        if(isInternetAvailable()) getNews();
+                        else {
+                            output.setText(R.string.no_connection);
+                            output.setVisibility(View.VISIBLE);
+                        }
+                        savedInstanceState.putParcelableArrayList("list",newsItemList);
+                        Log.d(TAG, "savedInstanceState updated. newsItemList size: " + newsItemList.size());
 
                     Log.d(TAG, "onClick() done");
                 } else {
@@ -259,8 +275,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //TODO: get this to run
+        //TODO: get this to run (newsItemList gets updated on onLoadFinished() as a thread. Need to update it in main thread too! Con)
         Log.d(TAG, "onSaveInstanceState()");
+
 
         Log.d(TAG, " onSaveInstanceState() - newsItemList size: " + newsItemList.size());
         outState.putParcelableArrayList("list", newsItemList);
