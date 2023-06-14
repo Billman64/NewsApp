@@ -8,6 +8,7 @@ package com.example.bill.newsapp.View;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
         import android.view.View;
+        import android.widget.ImageView;
         import android.widget.TextView;
 
         import com.example.bill.newsapp.R;
@@ -45,6 +46,7 @@ public class ArticleView extends AppCompatActivity {
         authorTv.setText(author);
         TextView urlTv = (TextView) findViewById(R.id.url);
         urlTv.setText(url);
+        ImageView linkIcon = (ImageView) findViewById(R.id.link_icon);
 
 
         urlTv.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +56,15 @@ public class ArticleView extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        linkIcon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                urlTv.performClick();
+            }
+        });
+
+
 
 
         Log.d(TAG, "intent info. Title: " + title + date + section + preview.substring(0,10) + author + url);
