@@ -45,23 +45,23 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         TextView section = (TextView) listItemView.findViewById(R.id.section);
         section.setText(currentNewsItem.getSection());
 
-        TextView author = (TextView) listItemView.findViewById(R.id.author);
-        author.setText(currentNewsItem.getAuthor());
+//        TextView author = (TextView) listItemView.findViewById(R.id.author);
+//        author.setText(currentNewsItem.getAuthor());
 
         TextView preview = (TextView) listItemView.findViewById(R.id.preview);
         preview.setText(currentNewsItem.getPreview());
 
-        TextView urlTv = (TextView) listItemView.findViewById(R.id.url);
-        urlTv.setText(currentNewsItem.getUrl());
-
-        // Tappable link opens web browser
-        urlTv.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(currentNewsItem.getUrl()));
-                getContext().startActivity(i);
-            }
-        });
+//        TextView urlTv = (TextView) listItemView.findViewById(R.id.url);
+//        urlTv.setText(currentNewsItem.getUrl());
+//
+//        // Tappable link opens web browser
+//        urlTv.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(currentNewsItem.getUrl()));
+//                getContext().startActivity(i);
+//            }
+//        });
 
         // implement onClickListener to make each newsItem clickable using newsItem's url
         listItemView.setOnClickListener(new View.OnClickListener(){
