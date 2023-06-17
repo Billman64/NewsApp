@@ -16,6 +16,7 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final int LOADER_ID = 1;
 
     public volatile ArrayList newsItemList = new ArrayList<NewsItem>();
+//    public volatile List newsItemList = Collections.synchronizedList(new ArrayList<NewsItem>()); // atomic arrayList
     public String TAG = "MainAct";
 
     //TODO: refactor non-View architectural functions to proper MVP placement
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             NewsAdapter adapter = new NewsAdapter(this, 0, newsItemList);
             lv.setAdapter(adapter);
 
-            Log.d(TAG, "onLoadFinished() newsItemList size: " + newsItemList.size());
+//            Log.d(TAG, "onLoadFinished() newsItemList size: " + newsItemList.size());
         }
     }
 
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Log.d(TAG, "onCreate() - newsItemList size: " + newsItemList.size());
         if(newsItemList.size()>0) {
-            savedInstanceState.putParcelableArrayList("list", newsItemList);
+            savedInstanceState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) newsItemList);
             Log.d(TAG, "savedInstanceState updated");
         }
 
@@ -160,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             output.setText(R.string.no_connection);
                             output.setVisibility(View.VISIBLE);
                         }
-                        savedInstanceState.putParcelableArrayList("list",newsItemList);
+//                        savedInstanceState.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) newsItemList);    //TODO: fix error here
                         Log.d(TAG, "savedInstanceState updated. newsItemList size: " + newsItemList.size());
 
                     Log.d(TAG, "onClick() done");
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    private void getNews(){
+    private synchronized void getNews(){
 
         // in response to onClick(), sets up and calls LoaderManager to pull the news from the web via worker thread
         try {
@@ -278,9 +281,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //TODO: get this to run (newsItemList gets updated on onLoadFinished() as a thread. Need to update it in main thread too! Con)
         Log.d(TAG, "onSaveInstanceState()");
 
+        ListView lv = findViewById(R.id.listView);
 
-        Log.d(TAG, " onSaveInstanceState() - newsItemList size: " + newsItemList.size());
+
         outState.putParcelableArrayList("list", newsItemList);
+        Log.d(TAG, " parcelableArrayList has been put into outState. list isEmpty(): " + newsItemList.isEmpty());
+
+//        lv.getChildAt(2)
+
+
+//        Log.d(TAG, " onSaveInstanceState() - newsItemList size: " + newsItemList.size());
+
+//        ArrayList al = new ArrayList(newsItemList);
+//        al.addAll(newsItemList);
+
+//        outState.putParcelableArrayList("list", al);    //TODO: fix crash here - java.util.Collections$SynchronizedRandomAccessList cannot be cast to java.util.ArrayList
     }
 
     @Override
