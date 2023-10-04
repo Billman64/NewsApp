@@ -39,7 +39,8 @@ public class ArticleView extends AppCompatActivity {
         TextView tagTv = (TextView) findViewById(R.id.tag);
         tagTv.setText(section); //TODO: fix inconsistency between tag and section
         TextView dateTv = (TextView) findViewById(R.id.date);
-        dateTv.setText(date);
+        String formattedDate = date.substring(0,9) + " " + date.substring(10);
+        dateTv.setText(formattedDate);
         TextView articleTv = (TextView) findViewById(R.id.article_text);
         articleTv.setText(preview);
         TextView authorTv = (TextView) findViewById(R.id.author);
